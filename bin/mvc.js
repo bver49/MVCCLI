@@ -9,6 +9,9 @@ var argv = require("yargs").help("h")
 	.example("mvc g -c user", "Generate controller named user.js")
 	.example("mvc g -c user index","Generate controller named user.js with index.ejs")
 	.example("mvc d -c user", "Destroy controller named user.js")
+	.example("mvc g -m user", "Generate model named User.js")
+	.example("mvc g -m user -s name:String age:Number", "Generate model named User.js with schema setting")
+	.example("mvc d -m user", "Destroy model named User.js")
 	.command(["generate", "g"], "Generate model or controller", {
 			controller: {
 				alias: "c",
@@ -16,6 +19,10 @@ var argv = require("yargs").help("h")
 			},
 			model: {
 				alias: "m"
+			},
+			schema: {
+				alias: "s",
+				type: "array"
 			}
 		},
 		function(argv) {
@@ -61,7 +68,7 @@ var argv = require("yargs").help("h")
 				fs.mkdir(__dirname + "/model", function(e) {
 					if(!e || (e && e.code === 'EEXIST')) {
 						var cargvm  = argv.m.charAt(0).toUpperCase() + argv.m.slice(1);
-						fs.writeFile(__dirname + `/model/${cargvm}.js`,template.model(argv.m), function(err) {
+						fs.writeFile(__dirname + `/model/${cargvm}.js`,template.model(argv.m,argv.s), function(err) {
 							if(err) {
 								return console.log(err);
 							}
@@ -132,4 +139,3 @@ var argv = require("yargs").help("h")
 	.describe("v", "View name")
 	.locale("en")
 	.argv;
-
