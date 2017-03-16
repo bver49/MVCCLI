@@ -20,7 +20,7 @@ router.get("/${list[0]}", function(req,res) {
     }
   });
 }
-return `var express = require('express');
+return `var express = require("express");
 var router = express.Router();
 var ${cname} = require('../model/${cname}');
 
@@ -44,7 +44,7 @@ var model = function(name,schemalist) {
       if(i!=schemalist.length-1) schema+=",\n"
     }
   }
-  return `var mongoose = require('mongoose');
+  return `var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
 /*
@@ -62,7 +62,13 @@ var ${name}Schema = new Schema({
 ${schema}
 });
 
-var ${cname} = mongoose.model('${cname}', ${name}Schema);
+/*
+${name}Schema.methods.customMethod = function() {
+  return this.model("${cname}").find();
+};
+*/
+
+var ${cname} = mongoose.model("${cname}", ${name}Schema);
 
 module.exports = ${cname};`;
 }
