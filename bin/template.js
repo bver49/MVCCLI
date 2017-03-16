@@ -1,5 +1,6 @@
 var controller = function(name,views) {
 var cname = name.charAt(0).toUpperCase() + name.slice(1);
+cname = cname.slice(0, -1);
 var route="";
 if(views.length>0){
   views.forEach(function(view,index){
