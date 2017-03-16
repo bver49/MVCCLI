@@ -19,7 +19,7 @@ var argv = require("yargs").help("h")
 			}
 		},
 		function(argv) {
-			if(argv.c.length > 0) {
+			if(argv.c && argv.c.length > 0) {
 				fs.mkdir(__dirname + "/controller", function(e) {
 					if(!e || (e && e.code === 'EEXIST')) {
 						fs.writeFile(__dirname + `/controller/${argv.c[0]}.js`, template.controller(argv.c[0], argv.c), function(err) {
@@ -60,11 +60,12 @@ var argv = require("yargs").help("h")
 			} else if(argv.m) {
 				fs.mkdir(__dirname + "/model", function(e) {
 					if(!e || (e && e.code === 'EEXIST')) {
-						fs.writeFile(__dirname + "/model/" + argv.m + ".js", "", function(err) {
+						var cargvm  = argv.m.charAt(0).toUpperCase() + argv.m.slice(1);
+						fs.writeFile(__dirname + `/model/${cargvm}.js`,template.model(argv.m), function(err) {
 							if(err) {
 								return console.log(err);
 							}
-							console.log(chalk.green(`Model ${argv.m}.js create!`));
+							console.log(chalk.green(`Model ${cargvm}.js create!`));
 						});
 					} else {
 						console.log(e);
@@ -85,6 +86,9 @@ var argv = require("yargs").help("h")
 			if(argv.c) {
 				fs.unlink(__dirname + `/controller/${argv.c}.js`, function(err) {
 					if(err) {
+						if(err.code=="ENOENT"){
+							return console.log(chalk.red(`Controller ${argv.c}.js not found`));
+						}
 						return console.log(chalk.red(err.code));
 					}
 					console.log(chalk.red(`Controller ${argv.c}.js delete`));
@@ -110,11 +114,15 @@ var argv = require("yargs").help("h")
 					}
 				});
 			} else if(argv.m) {
-				fs.unlink(__dirname + `/model/${argv.m}.js`, function(err) {
+				var cargvm  = argv.m.charAt(0).toUpperCase() + argv.m.slice(1);
+				fs.unlink(__dirname + `/model/${cargvm}.js`, function(err) {
 					if(err) {
+						if(err.code=="ENOENT"){
+							return console.log(chalk.red(`Model ${cargvm}.js not found`));
+						}
 						return console.log(chalk.red(err.code));
 					}
-					console.log(chalk.red(`Controller ${argv.m}.js delete`));
+					console.log(chalk.red(`Model ${cargvm}.js delete`));
 				});
 			}
 		}
@@ -124,3 +132,4 @@ var argv = require("yargs").help("h")
 	.describe("v", "View name")
 	.locale("en")
 	.argv;
+
