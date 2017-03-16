@@ -7,7 +7,7 @@ __dirname += "/..";
 var argv = require("yargs").help("h")
 	.usage("\nUsage: mvc <command> [option]")
 	.example("mvc g -c user", "Generate controller named user.js")
-	.example("mvc g -c user index","Generate controller named user.js with index.ejs")
+	.example("mvc g -c user index", "Generate controller named user.js with index.ejs")
 	.example("mvc d -c user", "Destroy controller named user.js")
 	.example("mvc g -m user", "Generate model named User.js")
 	.example("mvc g -m user -s name:String age:Number", "Generate model named User.js with schema setting")
@@ -67,8 +67,8 @@ var argv = require("yargs").help("h")
 			} else if(argv.m) {
 				fs.mkdir(__dirname + "/model", function(e) {
 					if(!e || (e && e.code === 'EEXIST')) {
-						var cargvm  = argv.m.charAt(0).toUpperCase() + argv.m.slice(1);
-						fs.writeFile(__dirname + `/model/${cargvm}.js`,template.model(argv.m,argv.s), function(err) {
+						var cargvm = argv.m.charAt(0).toUpperCase() + argv.m.slice(1);
+						fs.writeFile(__dirname + `/model/${cargvm}.js`, template.model(argv.m, argv.s), function(err) {
 							if(err) {
 								return console.log(err);
 							}
@@ -93,7 +93,7 @@ var argv = require("yargs").help("h")
 			if(argv.c) {
 				fs.unlink(__dirname + `/controller/${argv.c}.js`, function(err) {
 					if(err) {
-						if(err.code=="ENOENT"){
+						if(err.code == "ENOENT") {
 							return console.log(chalk.red(`Controller ${argv.c}.js not found`));
 						}
 						return console.log(chalk.red(err.code));
@@ -121,10 +121,10 @@ var argv = require("yargs").help("h")
 					}
 				});
 			} else if(argv.m) {
-				var cargvm  = argv.m.charAt(0).toUpperCase() + argv.m.slice(1);
+				var cargvm = argv.m.charAt(0).toUpperCase() + argv.m.slice(1);
 				fs.unlink(__dirname + `/model/${cargvm}.js`, function(err) {
 					if(err) {
-						if(err.code=="ENOENT"){
+						if(err.code == "ENOENT") {
 							return console.log(chalk.red(`Model ${cargvm}.js not found`));
 						}
 						return console.log(chalk.red(err.code));
@@ -134,8 +134,49 @@ var argv = require("yargs").help("h")
 			}
 		}
 	)
+	.command(["lise", "ls"], "Show MVC folder", {},
+		function(argv) {
+			if(fs.existsSync(__dirname + `/model`)) {
+				fs.readdir(__dirname + `/model`, function(err, files) {
+					if(err) {
+						return console.log(err);
+					}
+					console.log("\nModel");
+					console.log("|");
+					files.forEach(function(file) {
+						console.log(`|--- ${file}`);
+					});
+				});
+			}
+			if(fs.existsSync(__dirname + `/view`)) {
+				fs.readdir(__dirname + `/view`, function(err, files) {
+					if(err) {
+						return console.log(err);
+					}
+					console.log("\nView");
+					console.log("|");
+					files.forEach(function(file) {
+						console.log(`|--- ${file}`);
+					});
+				});
+			}
+			if(fs.existsSync(__dirname + `/controller`)) {
+				fs.readdir(__dirname + `/controller`, function(err, files) {
+					if(err) {
+						return console.log(err);
+					}
+					console.log("\nController");
+					console.log("|");
+					files.forEach(function(file) {
+						console.log(`|--- ${file}`);
+					});
+				});
+			}
+		}
+	)
 	.describe("c", "Controller name")
 	.describe("m", "Model name")
 	.describe("v", "View name")
+	.describe("s", "Schema setting")
 	.locale("en")
 	.argv;
