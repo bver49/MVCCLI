@@ -161,7 +161,7 @@ app.use("/${argv.c[0].slice(0, -1)}",${argv.c[0]});`
 			}
 		}
 	)
-	.command(["lise", "ls"], "Show MVC folder", {},
+	.command(["list", "ls"], "Show MVC folder", {},
 		function(argv) {
 			if(fs.existsSync(__dirname + `/model`)) {
 				fs.readdir(__dirname + `/model`, function(err, files) {
