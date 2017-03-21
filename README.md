@@ -7,14 +7,12 @@ Commands:
   generate  Generate model or controller                            [aliases: g]
   destroy   Destroy model or controller                             [aliases: d]
   list      Show MVC folder                                        [aliases: ls]
-  destroy   Destroy model or controller                             [aliases: d]
-  new       Generate app.js file
+  new       Generate a new project!
 
 Options:
   -h  Show help                                                        [boolean]
   -c  Controller name
   -m  Model name
-  -v  View name
   -s  Schema setting
 
 Examples:
@@ -24,4 +22,5 @@ Examples:
   mvc g -m user                            Generate model named User.js
   mvc g -m user -s name:String age:Number  Generate model named User.js with schema setting
   mvc d -m user                            Destroy model named User.js
-  ```
+  mvc new -n newproject                    Generate a new project name newproject
+```
