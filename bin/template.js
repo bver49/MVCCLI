@@ -75,6 +75,7 @@ Mutiple option
 {type: Date , default: Date.now }
 {type: String , unique: true, required: true }
 {type: String , minlength: 18, maxlength: 65 }
+{type: String , ref:"Reference collection name" }
 */
 
 var ${name}Schema = new Schema({
